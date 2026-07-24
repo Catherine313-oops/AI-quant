@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黄金ML量化策略 - 回测报告</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: #f5f6f8; color: #2c3e50; line-height: 1.7;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: white; padding: 40px 20px; text-align: center; border-radius: 12px;
+  margin-bottom: 24px;
+}
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header p { opacity: 0.8; font-size: 14px; }
+.card {
+  background: white; border-radius: 10px; padding: 24px; margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.card h2 { font-size: 18px; margin-bottom: 16px; border-bottom: 2px solid #e74c3c; padding-bottom: 8px; }
+.metrics-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.metric-item {
+  background: #f8f9fa; border-radius: 8px; padding: 14px; text-align: center;
+  border-left: 3px solid #e74c3c;
+}
+.metric-item.win { border-left-color: #27ae60; }
+.metric-item.warn { border-left-color: #e67e22; }
+.metric-item .label { font-size: 12px; color: #7f8c8d; margin-bottom: 4px; }
+.metric-item .value { font-size: 20px; font-weight: 700; color: #2c3e50; }
+.metric-item .value.red { color: #e74c3c; }
+.metric-item .value.green { color: #27ae60; }
+.metric-item .value.orange { color: #e67e22; }
+table {
+  width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px;
+}
+th { background: #f0f2f5; padding: 10px 12px; text-align: center; font-weight: 600; }
+td { padding: 8px 12px; text-align: center; border-bottom: 1px solid #ecf0f1; }
+tr:hover td { background: #f8f9fa; }
+.up { color: #e74c3c; font-weight: 600; }
+.down { color: #27ae60; font-weight: 600; }
+.chart-img { width: 100%; border-radius: 8px; margin: 12px 0; }
+.chart-container { width: 100%; height: 420px; margin: 12px 0; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.summary-box {
+  padding: 16px; background: linear-gradient(135deg, #fff5f5, #fff0f0);
+  border-radius: 8px; margin: 12px 0; border: 1px solid #fecaca;
+}
+.summary-box h3 { color: #c0392b; margin-bottom: 8px; }
+.strategy-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 12px; margin-right: 4px;
+}
+.strategy-tag.basic { background: #dbeafe; color: #1d4ed8; }
+.strategy-tag.bonus { background: #fce7f3; color: #be185d; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>黄金 ML 量化策略回测报告</h1>
+  <p>标的: 山东黄金(600547.SH) | 数据周期: 2016-07-18 ~ 2026-07-17 | 2398条日线</p>
+  <p>报告生成: 2026-07-18 | 策略类型: 分类预测+回归预测+集成信号</p>
+</div>
+
+<!-- 核心结果摘要 -->
+<div class="card">
+  <h2>核心结果摘要</h2>
+  <div class="summary-box">
+    <h3>基础分类策略</h3>
+    <p>采用逻辑回归模型(最优AUC=0.5407)，基于分类概率>0.55买入、<0.45卖出，实现<strong class="up">+12.80%</strong>总收益，大幅跑赢买入持有的<strong class="down">-8.10%</strong>，超额收益<strong class="up">+20.90%</strong>。最大回撤-20.55%，夏普比率0.292，胜率54.3%。</p>
+  </div>
+  <div class="summary-box">
+    <h3>附加题：多模型集成+自适应仓位策略</h3>
+    <p>采用逻辑回归+随机森林+XGBoost集成分类+回归双确认信号，配合波动率自适应仓位管理，实现<strong class="down">-6.32%</strong>总收益，相对买入持有<strong class="down">-17.62%</strong>仍有<strong class="up">+11.31%</strong>超额。最大回撤仅-12.76%，风控表现更优。</p>
+  </div>
+</div>
+
+<!-- 基础策略指标 -->
+<div class="card">
+  <h2>基础策略回测指标</h2>
+  <div class="metrics-grid">
+    <div class="metric-item"><div class="label">总收益率</div><div class="value up">+12.80%</div></div>
+    <div class="metric-item"><div class="label">年化收益率</div><div class="value up">+6.45%</div></div>
+    <div class="metric-item warn"><div class="label">最大回撤</div><div class="value orange">-20.55%</div></div>
+    <div class="metric-item"><div class="label">夏普比率</div><div class="value">0.292</div></div>
+    <div class="metric-item"><div class="label">索提诺比率</div><div class="value">0.351</div></div>
+    <div class="metric-item"><div class="label">Calmar比率</div><div class="value">0.314</div></div>
+    <div class="metric-item win"><div class="label">胜率</div><div class="value green">54.3%</div></div>
+    <div class="metric-item"><div class="label">交易次数</div><div class="value">35</div></div>
+    <div class="metric-item"><div class="label">盈亏比</div><div class="value">1.23</div></div>
+    <div class="metric-item"><div class="label">买入持有收益</div><div class="value down">-8.10%</div></div>
+    <div class="metric-item"><div class="label">超额收益</div><div class="value up">+20.90%</div></div>
+    <div class="metric-item"><div class="label">年化波动率</div><div class="value">22.98%</div></div>
+  </div>
+</div>
+
+<!-- 模型对比 -->
+<div class="card">
+  <h2>模型效果对比</h2>
+  <table>
+    <tr><th>模型</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-Score</th><th>AUC</th><th>CV(5-fold)</th></tr>
+    <tr><td><strong>逻辑回归 ★</strong></td><td class="up">0.5236</td><td>0.5000</td><td>0.5270</td><td>0.5132</td><td class="up">0.5407</td><td>0.5338</td></tr>
+    <tr><td>决策树</td><td>0.5215</td><td>0.4973</td><td>0.4189</td><td>0.4548</td><td>0.5140</td><td>0.5129</td></tr>
+    <tr><td>随机森林</td><td>0.5043</td><td>0.4815</td><td>0.5270</td><td>0.5032</td><td>0.5171</td><td>0.5070</td></tr>
+    <tr><td>梯度提升</td><td>0.4807</td><td>0.4627</td><td>0.5586</td><td>0.5061</td><td>0.4970</td><td>0.5118</td></tr>
+    <tr><td>XGBoost</td><td>0.5193</td><td>0.4960</td><td class="up">0.5631</td><td class="up">0.5274</td><td>0.5259</td><td>0.5091</td></tr>
+  </table>
+  <p style="font-size:13px;color:#7f8c8d;margin-top:8px;">
+  ★ 最优模型(按AUC)。所有模型准确率集中在48%-52%区间，略高于50%随机基准。金融时序预测难度极高，但信号概率分化仍有交易价值。
+  </p>
+</div>
+
+<!-- 季度收益率 -->
+<div class="card">
+  <h2>季度收益率分析</h2>
+  <table>
+    <tr><th>季度</th><th>策略收益率</th><th>买入持有</th><th>超额收益</th></tr>
+    <tr><td>2024Q3</td><td class="up">+12.08%</td><td class="up">+3.21%</td><td class="up">+8.87%</td></tr>
+    <tr><td>2024Q4</td><td class="down">-7.72%</td><td class="down">-21.80%</td><td class="up">+14.09%</td></tr>
+    <tr><td>2025Q1</td><td class="up">+3.15%</td><td class="up">+16.11%</td><td class="down">-12.96%</td></tr>
+    <tr><td>2025Q2</td><td class="up">+0.31%</td><td class="up">+20.22%</td><td class="down">-19.91%</td></tr>
+    <tr><td>2025Q3</td><td class="down">-4.70%</td><td class="up">+18.07%</td><td class="down">-22.77%</td></tr>
+    <tr><td>2025Q4</td><td class="up">+0.56%</td><td class="down">-10.52%</td><td class="up">+11.08%</td></tr>
+    <tr><td>2026Q1</td><td class="up">+3.24%</td><td class="up">+0.15%</td><td class="up">+3.10%</td></tr>
+    <tr><td>2026Q2</td><td class="up">+1.54%</td><td class="down">-43.86%</td><td class="up">+45.40%</td></tr>
+    <tr><td>2026Q3</td><td>0.00%</td><td class="up">+12.41%</td><td class="down">-12.41%</td></tr>
+  </table>
+  <p style="font-size:13px;color:#7f8c8d;margin-top:8px;">
+  策略在下跌季度(如2024Q4 BH -21.80%、2026Q2 BH -43.86%)表现出显著防御性，通过减仓/空仓规避损失。
+  在上涨季度(2025Q1/Q2/Q3)策略收益落后于买入持有，反映趋势性牛市中的仓位不足缺陷。
+  </p>
+</div>
+
+<!-- 可视化图表 -->
+<div class="card">
+  <h2>图表展示</h2>
+
+  <h3 style="margin-top:16px;">1. 价格走势与交易信号</h3>
+  <img class="chart-img" src="charts/01_price_signals.png" alt="价格与信号">
+
+  <h3 style="margin-top:16px;">2. 权益曲线与回撤</h3>
+  <img class="chart-img" src="charts/02_equity_drawdown.png" alt="权益与回撤">
+
+  <h3 style="margin-top:16px;">3. 季度收益率对比</h3>
+  <img class="chart-img" src="charts/03_quarterly_returns.png" alt="季度收益">
+
+  <div class="two-col">
+    <div>
+      <h3>4. 模型效果雷达图</h3>
+      <img class="chart-img" src="charts/04_model_radar.png" alt="模型雷达">
+    </div>
+    <div>
+      <h3>5. 特征重要性</h3>
+      <img class="chart-img" src="charts/05_feature_importance.png" alt="特征重要性">
+    </div>
+  </div>
+
+  <h3 style="margin-top:16px;">6. 预测概率分布</h3>
+  <img class="chart-img" src="charts/06_prob_distribution.png" alt="概率分布">
+
+  <h3 style="margin-top:16px;">7. 模型对比柱状图</h3>
+  <img class="chart-img" src="charts/07_model_comparison.png" alt="模型对比">
+</div>
+
+<!-- 附加题结果 -->
+<div class="card">
+  <h2>附加题：多模型集成 + 回归预测 + 自适应仓位</h2>
+
+  <h3>策略设计</h3>
+  <table>
+    <tr><th width="200">组件</th><th>说明</th></tr>
+    <tr><td>分类集成</td><td>逻辑回归 + 随机森林 + XGBoost 三模型预测概率平均</td></tr>
+    <tr><td>回归预测</td><td>随机森林回归 + XGBoost回归预测未来5日收益率</td></tr>
+    <tr><td>综合买入信号</td><td>集成分类概率 > 0.55 <strong>AND</strong> 回归预测5日收益率 > 1%</td></tr>
+    <tr><td>综合卖出信号</td><td>集成分类概率 < 0.45 <strong>OR</strong> 回归预测5日收益率 < -1%</td></tr>
+    <tr><td>仓位管理</td><td>波动率自适应：仓位上限定为基准×(目标波动率/实际20日波动率)，上限1.5倍</td></tr>
+  </table>
+
+  <h3 style="margin-top:16px;">回测指标</h3>
+  <div class="metrics-grid">
+    <div class="metric-item"><div class="label">总收益率</div><div class="value down">-6.32%</div></div>
+    <div class="metric-item"><div class="label">买入持有</div><div class="value down">-17.62%</div></div>
+    <div class="metric-item"><div class="label">超额收益</div><div class="value up">+11.31%</div></div>
+    <div class="metric-item warn"><div class="label">最大回撤</div><div class="value orange">-12.76%</div></div>
+    <div class="metric-item"><div class="label">夏普比率</div><div class="value" style="color:#e74c3c">-0.353</div></div>
+    <div class="metric-item"><div class="label">胜率</div><div class="value">50.0%</div></div>
+    <div class="metric-item"><div class="label">交易次数</div><div class="value">18</div></div>
+    <div class="metric-item"><div class="label">盈亏比</div><div class="value">0.76</div></div>
+  </div>
+
+  <div class="two-col" style="margin-top:16px;">
+    <div>
+      <h3>综合策略权益曲线</h3>
+      <img class="chart-img" src="charts/bonus_01_equity.png" alt="综合权益">
+    </div>
+    <div>
+      <h3>信号分布分析</h3>
+      <img class="chart-img" src="charts/bonus_02_signals.png" alt="信号分布">
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-top:16px;">
+    <div>
+      <h3>季度收益对比</h3>
+      <img class="chart-img" src="charts/bonus_03_quarterly.png" alt="季度对比">
+    </div>
+    <div>
+      <h3>策略对比</h3>
+      <img class="chart-img" src="charts/bonus_04_comparison.png" alt="策略对比">
+    </div>
+  </div>
+</div>
+
+<!-- 结论 -->
+<div class="card">
+  <h2>结论与要点</h2>
+  <table>
+    <tr><th width="80">序号</th><th>发现</th></tr>
+    <tr><td>1</td><td><strong>随机游走验证</strong>：所有模型的Accuracy在48%-52%，AUC在0.50-0.54之间，确认黄金个股的日度方向预测极其困难，符合市场有效性假设。</td></tr>
+    <tr><td>2</td><td><strong>信号价值存在</strong>：尽管模型预测精度仅略高于随机，但预测概率的分化仍然创造了交易价值——高概率区间(>0.55)和低概率区间(<0.45)的区分产生了超额收益。</td></tr>
+    <tr><td>3</td><td><strong>防御性突出</strong>：基础策略在2026Q2 BH暴跌-43.86%期间仅微涨1.54%，实现+45.40%超额。策略的核心价值在于规避大幅下跌而非捕捉涨幅。</td></tr>
+    <tr><td>4</td><td><strong>模型差异小</strong>：5个模型之间F1差异不足0.08，说明瓶颈在特征信息含量而非模型架构。未来可考虑引入黄金期货价格、美元指数、VIX等外部特征。</td></tr>
+    <tr><td>5</td><td><strong>综合策略更稳健</strong>：附加题的综合策略虽然绝对收益为负，但最大回撤-12.76% vs 基础策略-20.55%，风控表现更优。双信号确认+自适应仓位有效控制了尾部风险。</td></tr>
+  </table>
+</div>
+
+<div class="card" style="text-align:center;font-size:13px;color:#95a5a6;">
+  <p>本报告仅供学习研究用途，不构成投资建议。数据来源: Tushare API，标的: 山东黄金(600547.SH)。</p>
+</div>
+
+</div>
+
+<script>
+// ECharts - 季度收益率走势图
+(function(){
+  var dom = document.createElement('div');
+  dom.className = 'chart-container';
+  dom.id = 'quarterly_trend';
+  document.querySelector('.card:nth-child(4)').appendChild(dom);
+  var chart = echarts.init(dom);
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    legend: { data: ['策略收益率','买入持有','超额收益'] },
+    xAxis: { type: 'category', data: ['24Q3','24Q4','25Q1','25Q2','25Q3','25Q4','26Q1','26Q2','26Q3'] },
+    yAxis: { type: 'value', name: '收益率(%)', axisLabel: { formatter: '{value}%' } },
+    series: [
+      { name: '策略收益率', type: 'line', data: [12.08,-7.72,3.15,0.31,-4.70,0.56,3.24,1.54,0.00],
+        lineStyle: { color: '#e74c3c', width: 2 }, itemStyle: { color: '#e74c3c' } },
+      { name: '买入持有', type: 'line', data: [3.21,-21.80,16.11,20.22,18.07,-10.52,0.15,-43.86,12.41],
+        lineStyle: { color: '#3498db', width: 2, type: 'dashed' }, itemStyle: { color: '#3498db' } },
+      { name: '超额收益', type: 'bar', data: [8.87,14.09,-12.96,-19.91,-22.77,11.08,3.10,45.40,-12.41],
+        itemStyle: { color: function(p){return p.value>=0?'rgba(231,76,60,0.7)':'rgba(39,174,96,0.7)'} } }
+    ]
+  });
+})();
+</script>
+
+</body>
+</html>
