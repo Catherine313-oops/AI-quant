@@ -14,7 +14,7 @@ import base64
 # 配置参数
 # ============================================================
 # Tushare token: 优先从环境变量读取，否则使用默认值
-TUSHARE_TOKEN = os.environ.get('TUSHARE_TOKEN', 'f17f27bdd055aca576e857d5d8a739581426a9482ddc991b014fa560')
+TUSHARE_TOKEN = os.environ.get('TUSHARE_TOKEN', None)
 INITIAL_CAPITAL = 100000.0
 CHANNEL_PERIOD = 20
 ATR_PERIOD = 14
