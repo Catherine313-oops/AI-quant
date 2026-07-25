@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>量化策略看板作品集</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: #f5f6f8;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+header {
+  text-align: center;
+  padding: 60px 20px 40px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: white;
+}
+header h1 { font-size: 32px; margin-bottom: 8px; }
+header p { opacity: 0.7; font-size: 15px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.card {
+  display: block;
+  background: white;
+  border-radius: 12px;
+  padding: 28px 24px;
+  text-decoration: none;
+  color: #2c3e50;
+  border: 1px solid #eee;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.card-icon { font-size: 36px; margin-bottom: 12px; }
+.card h2 { font-size: 18px; margin-bottom: 8px; }
+.card p { font-size: 13px; color: #666; margin-bottom: 14px; }
+.tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-right: 6px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>量化策略看板作品集</h1>
+  <p>基于 ECharts 的量化交易数据可视化集合</p>
+</header>
+
+<div class="grid">
+
+  <a href="smic_trading_panel.html" class="card">
+    <div class="card-icon">📈</div>
+    <h2>中芯国际交易面板</h2>
+    <p>SMIC日内交易数据可视化，K线图与成交量分析</p>
+    <span class="tag">ECharts</span><span class="tag">K线</span>
+  </a>
+
+  <a href="maotai_close_price.html" class="card">
+    <div class="card-icon">🍶</div>
+    <h2>茅台收盘价分析</h2>
+    <p>贵州茅台历史收盘价趋势与统计分析</p>
+    <span class="tag">ECharts</span><span class="tag">时序数据</span>
+  </a>
+
+  <a href="gold_price_panel.html" class="card">
+    <div class="card-icon">🥇</div>
+    <h2>黄金价格面板</h2>
+    <p>国际黄金价格走势监控与波动率分析</p>
+    <span class="tag">ECharts</span><span class="tag">贵金属</span>
+  </a>
+
+  <a href="moutai_price_panel.html" class="card">
+    <div class="card-icon">📊</div>
+    <h2>茅台价格面板</h2>
+    <p>茅台多维价格数据分析与可视化看板</p>
+    <span class="tag">ECharts</span><span class="tag">消费品</span>
+  </a>
+
+  <a href="gold_turtle_dashboard.html" class="card">
+    <div class="card-icon">🐢</div>
+    <h2>黄金海龟策略看板</h2>
+    <p>海龟交易法则应用于黄金市场的回测分析</p>
+    <span class="tag">ECharts</span><span class="tag">策略回测</span>
+  </a>
+
+  <a href="gold_classification_report.html" class="card">
+    <div class="card-icon">🤖</div>
+    <h2>黄金分类报告</h2>
+    <p>基于ML分类模型的黄金市场状态识别报告</p>
+    <span class="tag">ECharts</span><span class="tag">机器学习</span>
+  </a>
+
+  <a href="strategy_report.html" class="card">
+    <div class="card-icon">📋</div>
+    <h2>ML量化策略回测报告</h2>
+    <p>机器学习驱动的黄金量化策略完整回测</p>
+    <span class="tag">ECharts</span><span class="tag">回测报告</span>
+  </a>
+
+</div>
+
+</body>
+</html>
