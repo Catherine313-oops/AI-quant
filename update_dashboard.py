@@ -23,7 +23,7 @@ RISK_PER_TRADE = 0.02
 COMMISSION_RATE = 0.0003
 SLIPPAGE = 0.001
 
-OUTPUT_FILE = 'gold_turtle_dashboard.html'
+OUTPUT_FILE = 'gold-turtle-strategy.html'
 
 print("=" * 60)
 print("黄金海龟交易策略 - 每日更新")

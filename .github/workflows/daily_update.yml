@@ -37,4 +37,4 @@ jobs:
           commit_user_name: "Gold Turtle Bot"
           commit_user_email: "bot@example.com"
           branch: main
-          file_pattern: "gold_turtle_dashboard.html"
+          file_pattern: "gold-turtle-strategy.html"
