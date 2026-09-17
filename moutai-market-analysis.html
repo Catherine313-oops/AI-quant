@@ -750,9 +750,10 @@ function updateCards(shortMA, longMA) {
     var maxIdx = closes.indexOf(maxV);
     var minIdx = closes.indexOf(minV);
 
-    document.getElementById('maxPrice').textContent = '¥' + maxV.toFixed(3);
+    document.getElementById('latestPrice').textContent = '¥' + closes[closes.length - 1].toFixed(2);
+    document.getElementById('maxPrice').textContent = '¥' + maxV.toFixed(2);
     document.getElementById('maxDate').textContent = dates[maxIdx];
-    document.getElementById('minPrice').textContent = '¥' + minV.toFixed(3);
+    document.getElementById('minPrice').textContent = '¥' + minV.toFixed(2);
     document.getElementById('minDate').textContent = dates[minIdx];
 
     // 总涨跌幅
@@ -770,7 +771,7 @@ function updateCards(shortMA, longMA) {
     var longSubEl = document.getElementById('longMaSub');
 
     if (shortData !== null && shortData[shortData.length - 1] !== null) {
-        shortValEl.textContent = '¥' + shortData[shortData.length - 1].toFixed(3);
+        shortValEl.textContent = '¥' + shortData[shortData.length - 1].toFixed(2);
         shortLabelEl.textContent = '短均线 (MA' + shortMA + ')';
         shortSubEl.textContent = shortMA + '日移动平均';
     } else {
@@ -780,7 +781,7 @@ function updateCards(shortMA, longMA) {
     }
 
     if (longData !== null && longData[longData.length - 1] !== null) {
-        longValEl.textContent = '¥' + longData[longData.length - 1].toFixed(3);
+        longValEl.textContent = '¥' + longData[longData.length - 1].toFixed(2);
         longLabelEl.textContent = '长均线 (MA' + longMA + ')';
         longSubEl.textContent = longMA + '日移动平均';
     } else {
