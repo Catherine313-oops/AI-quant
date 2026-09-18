@@ -36,7 +36,8 @@ print("\n[1/6] 获取黄金价格数据...")
 ts.set_token(TUSHARE_TOKEN)
 pro = ts.pro_api()
 
-df = pro.daily(ts_code='600547.SH', start_date='20160713', end_date='20260713')
+END_DATE = pd.Timestamp.now().strftime('%Y%m%d')
+df = pro.daily(ts_code='600547.SH', start_date='20160713', end_date=END_DATE)
 if df is None or len(df) == 0:
     print("错误: 未获取到数据!")
     exit(1)
